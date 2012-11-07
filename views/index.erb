@@ -9,19 +9,21 @@
 	    $(document).ready(function(){
 	      map = new GMaps({
 	        div: '#map',
-	        //lat:<%= @location.getlat%>,
-	        //lng:<%= @location.getlng%>
 	        lat:34.710834,
 	        lng:137.726126
 	      });
+	    
+		    <% @locations.each do |loc| %>
+			    map.addMarker({
+			    	title:" + <%= loc.getname %> + ",
+			    	lat:<%= loc.getlat %>,
+			    	lng:<%= loc.getlng %>,
+			    	infoWindow: {
+					  content: '<p><%= loc.getname%></p>'
+					}
+		    	});
+		    <% end %>
 	    });
-
-	    <% @locations.eash do |loc| %>
-		    map.addMarker({
-		    	lat:<%= loc.getlat %>,
-		    	lng:<%= loc.getlng %>
-	    	});
-	    <% end %>
 
 	</script>
 	<style type="text/css">
