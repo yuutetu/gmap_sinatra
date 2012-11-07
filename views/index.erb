@@ -9,10 +9,20 @@
 	    $(document).ready(function(){
 	      map = new GMaps({
 	        div: '#map',
-	        lat:<%= @location.lat%>,
-	        lng:<%= @location.lng%>
+	        //lat:<%= @location.getlat%>,
+	        //lng:<%= @location.getlng%>
+	        lat:34.710834,
+	        lng:137.726126
 	      });
 	    });
+
+	    <% @locations.eash do |loc| %>
+		    map.addMarker({
+		    	lat:<%= loc.getlat %>,
+		    	lng:<%= loc.getlng %>
+	    	});
+	    <% end %>
+
 	</script>
 	<style type="text/css">
 		#map{
