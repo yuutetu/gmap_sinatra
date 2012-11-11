@@ -3,22 +3,13 @@ require "rubygems"
 require "sinatra"
 require "./location"
 
-=begin
-class Location
-	def lat
-		@lat=34.710834
-	end
-
-	def lng
-		@lng=137.726126
+class FBApi
+	def getLocation
 	end
 end
-=end
-
-
 
 get "/" do
 	@locations = getFriendLocation
-	#@location=Location.new
+	@mylocation=Location.new("hamamatsu",34.710834,137.726126)
 	erb:index
 end

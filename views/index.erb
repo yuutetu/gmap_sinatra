@@ -9,8 +9,20 @@
 	    $(document).ready(function(){
 	      map = new GMaps({
 	        div: '#map',
-	        lat:34.710834,
-	        lng:137.726126
+	        lat:<%= @mylocation.getlat %>,
+	        lng:<%= @mylocation.getlng %>,
+	        zoom:8
+	      });
+
+	      map.addMarker({
+	      	title:" + <%= @mylocation.getname %> +",
+	      	lat:<%= @mylocation.getlat %>,
+	        lng:<%= @mylocation.getlng %>,
+	        //color:"blue",
+	        infoWindow:{
+	        	content:'<p><%= @mylocation.getname %></p>'
+	        },
+	        animation: google.maps.Animation.DROP
 	      });
 	    
 		    <% @locations.each do |loc| %>
@@ -20,7 +32,8 @@
 			    	lng:<%= loc.getlng %>,
 			    	infoWindow: {
 					  content: '<p><%= loc.getname%></p>'
-					}
+					},
+					animation: google.maps.Animation.DROP
 		    	});
 		    <% end %>
 	    });
@@ -28,7 +41,7 @@
 	</script>
 	<style type="text/css">
 		#map{
-			height: 50%;
+			height: 70%;
 			width: 100%;
 		}
 	</style>
