@@ -2,6 +2,7 @@
 require "rubygems"
 require "sinatra"
 require "./location"
+require "./fbapi"
 
 class FBApi
 	def getLocation
@@ -9,7 +10,8 @@ class FBApi
 end
 
 get "/" do
-	@locations = getFriendLocation
+	fbapi=FBApi.new
+	@locations=fbapi.getFriendLocation
 	@mylocation=Location.new("hamamatsu",34.710834,137.726126)
 	erb:index
 end
