@@ -11,7 +11,7 @@ class FBApi
 
 	def getFriendLocation
 
-		token="AAACEdEose0cBABq3AD2ZCNUVLuGIADZAbYL9zva1lTsmMkSEI3iVgajV9zZAdlD8UTBbZC2WXtKyZC6Foze7TCpx5kgIq3AortxZCQHZBlEtk0xDYPxy7FU"
+		token=""
 		@rest=Koala::Facebook::API.new(token)
 
 		fql=<<"EOS"
