@@ -11,7 +11,7 @@ class FBApi
 
 	def getFriendLocation
 
-		token=""
+		token="AAACEdEose0cBABq3AD2ZCNUVLuGIADZAbYL9zva1lTsmMkSEI3iVgajV9zZAdlD8UTBbZC2WXtKyZC6Foze7TCpx5kgIq3AortxZCQHZBlEtk0xDYPxy7FU"
 		@rest=Koala::Facebook::API.new(token)
 
 		fql=<<"EOS"
@@ -50,8 +50,14 @@ EOS
 					sleep 1
 				end
 			end
-		rescue
+		rescue => err
+			puts "rescue"
+			pp friendsLocation
+			#pp err
 			return friendsLocation
+		#ensure
+		#	puts "ensure"
+		#	return friendsLocation
 		end
 
 
