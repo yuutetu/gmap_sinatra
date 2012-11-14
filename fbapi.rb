@@ -36,17 +36,17 @@ EOS
         array = JSON.load(json)["result"]
 
         pp array
-        unless array.nil? || array["error"].nil? || array["coordinate"].nil?
-          latlng = Location.new(
-              address,
-              array["coordinate"]["lat"],
-              array["coordinate"]["lng"]
-          )
+        next if array && array["error"] && array["coordinate"]
 
-          friendsLocation << latlng
-          #puts latlng.getname
-          #puts latlng.getlat
-        end
+        latlng = Location.new(
+            address,
+            array["coordinate"]["lat"],
+            array["coordinate"]["lng"]
+        )
+
+        friendsLocation << latlng
+        #puts latlng.getname
+        #puts latlng.getlat
 
         sleep 1
       end
