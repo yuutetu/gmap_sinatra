@@ -50,8 +50,14 @@ EOS
 					sleep 1
 				end
 			end
-		rescue
+		rescue => err
+			puts "rescue"
+			pp friendsLocation
+			#pp err
 			return friendsLocation
+		#ensure
+		#	puts "ensure"
+		#	return friendsLocation
 		end
 
 
