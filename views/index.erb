@@ -1,56 +1,56 @@
 <!html>
 <head>
-	<title>GoogleMaps</title>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-	<script type="text/javascript" src="js/gmaps.js"></script>
-	<script type="text/javascript">
-		var map;
-	    $(document).ready(function(){
-	      map = new GMaps({
-	        div: '#map',
-	        lat:<%= @mylocation.getlat %>,
-	        lng:<%= @mylocation.getlng %>,
-	        zoom:8
-	      });
+  <title>GoogleMaps</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="js/gmaps.js"></script>
+  <script type="text/javascript">
+      var map;
+      $(document).ready(function () {
+          map = new GMaps({
+              div:'#map',
+              lat:<%= @mylocation.getlat %>,
+              lng:<%= @mylocation.getlng %>,
+              zoom:8
+          });
 
-	      map.addMarker({
-	      	title:" + <%= @mylocation.getname %> +",
-	      	lat:<%= @mylocation.getlat %>,
-	        lng:<%= @mylocation.getlng %>,
-	        //color:"blue",
-	        infoWindow:{
-	        	content:'<p><%= @mylocation.getname %></p>'
-	        },
-	        animation: google.maps.Animation.DROP
-	      });
-	    
-		    <% @locations.each do |loc| %>
-			    map.addMarker({
-			    	title:" + <%= loc.getname %> + ",
-			    	lat:<%= loc.getlat %>,
-			    	lng:<%= loc.getlng %>,
-			    	infoWindow: {
-					  content: '<p><%= loc.getname%></p>'
-					},
-					animation: google.maps.Animation.DROP
-		    	});
-		    <% end %>
-	    });
+          map.addMarker({
+              title:" + <%= @mylocation.getname %> +",
+              lat:<%= @mylocation.getlat %>,
+              lng:<%= @mylocation.getlng %>,
+              //color:"blue",
+              infoWindow:{
+                  content:'<p><%= @mylocation.getname %></p>'
+              },
+              animation:google.maps.Animation.DROP
+          });
 
-	</script>
-	<style type="text/css">
-		#map{
-			height: 70%;
-			width: 100%;
-		}
-	</style>
+          <% @locations.each do |loc| %>
+          map.addMarker({
+              title:" + <%= loc.getname %> + ",
+              lat:<%= loc.getlat %>,
+              lng:<%= loc.getlng %>,
+              infoWindow:{
+                  content:'<p><%= loc.getname%></p>'
+              },
+              animation:google.maps.Animation.DROP
+          });
+          <% end %>
+      });
+
+  </script>
+  <style type="text/css">
+      #map {
+          height: 70%;
+          width: 100%;
+      }
+  </style>
 </head>
 <body>
-	<h1>GMaps.js Basic</h1>
-  <div class="row">
-    <div class="span11">
-      <div id="map"></div>
-    </div>
+<h1>GMaps.js Basic</h1>
+<div class="row">
+  <div class="span11">
+    <div id="map"></div>
   </div>
+</div>
 </body>

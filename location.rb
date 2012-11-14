@@ -3,22 +3,22 @@ require "rubygems"
 require "./fbapi"
 
 class Location
-	def initialize(name,lat,lng)
-		@name=name
-		@lat=lat
-		@lng=lng
-	end
+  def initialize(name, lat, lng)
+    @name = name
+    @lat = lat
+    @lng = lng
+  end
 
-	def getname
-		@name
-	end
+  def getname
+    @name
+  end
 
-	def getlat
-		@lat
-	end
+  def getlat
+    @lat
+  end
 
-	def getlng
-		@lng
-	end
+  def getlng
+    @lng
+  end
 end
 
