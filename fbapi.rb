@@ -35,7 +35,7 @@ EOS
         array = JSON.load(json)["result"]
 
         pp array
-        next unless array && array["error"] && array["coordinate"]
+        next unless array && array["error"].nil? && array["coordinate"]
 
         latlng = Location.new(
             address,
