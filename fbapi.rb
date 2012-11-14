@@ -1,6 +1,5 @@
 #encoding:utf-8
 require "rubygems"
-require "koala"
 require "open-uri"
 require "active_support/core_ext"
 require "pp"

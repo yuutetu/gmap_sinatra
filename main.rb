@@ -1,6 +1,7 @@
-#encoding:utf-8
-require "rubygems"
-require "sinatra"
+# encoding: utf-8
+require "bundler"
+Bundler.require
+
 require "./location"
 require "./fbapi"
 
