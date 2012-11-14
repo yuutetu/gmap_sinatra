@@ -8,7 +8,7 @@ class FBApi
 
   def getFriendLocation
 
-    token = ""
+    token = ENV["FACEBOOK_TOKEN"] || raise("specify $FACEBOOK_TOKEN")
     @rest = Koala::Facebook::API.new(token)
 
     fql = <<-EOS
