@@ -11,11 +11,11 @@ class FBApi
     token = ""
     @rest = Koala::Facebook::API.new(token)
 
-    fql=<<"EOS"
-			SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
-			OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
-			OR uid IN (select current_location from user where uid = me())
-EOS
+    fql = <<-EOS
+      SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
+      OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
+      OR uid IN (select current_location from user where uid = me())
+    EOS
 
 
     friendsLocation = Array.new
