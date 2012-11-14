@@ -1,10 +1,8 @@
 #encoding:utf-8
-require "rubygems"
-require "open-uri"
 require "active_support/core_ext"
+require "open-uri"
 require "pp"
 require "./location"
-
 
 class FBApi
 
