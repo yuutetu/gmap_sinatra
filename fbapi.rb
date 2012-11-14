@@ -27,28 +27,28 @@ EOS
       json = @rest.fql_query(fql)
       json.each do |r|
         location = r["current_location"]
-        unless location.nil?
-          address = location["name"].split[0]
-          uri = "http://www.geocoding.jp/api/?v=1.1&q='#{address}'"
-          result = open(uri, "r:UTF-8")
-          json = Hash.from_xml(result).to_json
-          array = JSON.load(json)["result"]
+        next unless location
 
-          pp array
-          unless array.nil? || array["error"].nil? || array["coordinate"].nil?
-            latlng = Location.new(
-                address,
-                array["coordinate"]["lat"],
-                array["coordinate"]["lng"]
-            )
+        address = location["name"].split[0]
+        uri = "http://www.geocoding.jp/api/?v=1.1&q='#{address}'"
+        result = open(uri, "r:UTF-8")
+        json = Hash.from_xml(result).to_json
+        array = JSON.load(json)["result"]
 
-            friendsLocation << latlng
-            #puts latlng.getname
-            #puts latlng.getlat
-          end
+        pp array
+        unless array.nil? || array["error"].nil? || array["coordinate"].nil?
+          latlng = Location.new(
+              address,
+              array["coordinate"]["lat"],
+              array["coordinate"]["lng"]
+          )
 
-          sleep 1
+          friendsLocation << latlng
+          #puts latlng.getname
+          #puts latlng.getlat
         end
+
+        sleep 1
       end
     rescue => err
       puts "rescue"
