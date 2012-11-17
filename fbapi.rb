@@ -5,26 +5,29 @@ require "open-uri"
 require "active_support/core_ext"
 require "pp"
 require "./location"
+require "tap"
 
 
 class FBApi
 
 	def getFriendLocation
 
-		token=""
-		@rest=Koala::Facebook::API.new(token)
+		token = ENV["FBAPITOKEN"]
+		@rest = Koala::Facebook::API.new(token)
 
-		fql=<<"EOS"
+		fql =<<-"EOS"
 			SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
 			OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
-			OR uid IN (select current_location from user where uid = me())
-EOS
+		EOS
 
-
+		puts token
+		puts fql
+		fql.tap{}
 		friendsLocation=Array.new
 
 		begin
-			json = @rest.fql_query(fql)
+			json = @rest.fql_query(fql).tap{}
+			pp json
 			json.each do |r|
 				location = r["current_location"]
 				unless location.nil?
@@ -43,21 +46,14 @@ EOS
 						)
 
 						friendsLocation << latlng
-						#puts latlng.getname
-						#puts latlng.getlat
 					end
 
 					sleep 1
 				end
 			end
 		rescue => err
+			puts err
 			puts "rescue"
-			pp friendsLocation
-			#pp err
-			return friendsLocation
-		#ensure
-		#	puts "ensure"
-		#	return friendsLocation
 		end
 
 

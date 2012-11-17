@@ -9,29 +9,29 @@
 	    $(document).ready(function(){
 	      map = new GMaps({
 	        div: '#map',
-	        lat:<%= @mylocation.getlat %>,
-	        lng:<%= @mylocation.getlng %>,
+	        lat:<%= @mylocation.lat %>,
+	        lng:<%= @mylocation.lng %>,
 	        zoom:8
 	      });
 
 	      map.addMarker({
-	      	title:" + <%= @mylocation.getname %> +",
-	      	lat:<%= @mylocation.getlat %>,
-	        lng:<%= @mylocation.getlng %>,
+	      	title:" + <%= @mylocation.name %> +",
+	      	lat:<%= @mylocation.lat %>,
+	        lng:<%= @mylocation.lng %>,
 	        //color:"blue",
 	        infoWindow:{
-	        	content:'<p><%= @mylocation.getname %></p>'
+	        	content:'<p><%= @mylocation.name %></p>'
 	        },
 	        animation: google.maps.Animation.DROP
 	      });
 	    
 		    <% @locations.each do |loc| %>
 			    map.addMarker({
-			    	title:" + <%= loc.getname %> + ",
-			    	lat:<%= loc.getlat %>,
-			    	lng:<%= loc.getlng %>,
+			    	title:" + <%= loc.name %> + ",
+			    	lat:<%= loc.lat %>,
+			    	lng:<%= loc.lng %>,
 			    	infoWindow: {
-					  content: '<p><%= loc.getname%></p>'
+					  content: '<p><%= loc.name%></p>'
 					},
 					animation: google.maps.Animation.DROP
 		    	});
@@ -47,7 +47,7 @@
 	</style>
 </head>
 <body>
-	<h1>GMaps.js Basic</h1>
+	<h1>SinatraとFB GraphAPIとGeocodingAPIと</h1>
   <div class="row">
     <div class="span11">
       <div id="map"></div>
