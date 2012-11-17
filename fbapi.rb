@@ -18,6 +18,8 @@ class FBApi
 		fql =<<-"EOS"
 			SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
 			OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
+			AND current_location <> ''
+			LIMIT 1,10
 		EOS
 
 		puts token
