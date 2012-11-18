@@ -27,23 +27,13 @@ class FBApi
         next unless fb_location
 
         location_name = fb_location["name"].split[0]
-        uri = "http://www.geocoding.jp/api/?v=1.1&q='#{location_name}'"
-        result = open(uri, "r:UTF-8")
-        friends = Hash.from_xml(result).to_json
-        array = JSON.load(friends)["result"]
+        location = find_coordinate(location_name)
 
-        pp array
-        next unless array && array["error"].nil? && array["coordinate"]
+        next unless location
 
-        latlng = Location.new(
-            location_name,
-            array["coordinate"]["lat"],
-            array["coordinate"]["lng"]
-        )
-
-        friend_locations << latlng
-        #puts latlng.getname
-        #puts latlng.getlat
+        friend_locations << location
+        #puts location.getname
+        #puts location.getlat
 
         sleep 1
       end
@@ -53,11 +43,30 @@ class FBApi
       #pp err
       return friend_locations
       #ensure
-      #	puts "ensure"
-      #	return friend_locations
+      # puts "ensure"
+      # return friend_locations
     end
 
     friend_locations
+  end
+
+  def find_coordinate(location_name)
+    uri = "http://www.geocoding.jp/api/?v=1.1&q='#{location_name}'"
+    result_xml = open(uri, "r:UTF-8")
+    result_json = Hash.from_xml(result_xml).to_json
+    result = JSON.load(result_json)["result"]
+
+    pp result
+
+    if result && result["error"].nil? && result["coordinate"]
+      Location.new(
+          location_name,
+          result["coordinate"]["lat"],
+          result["coordinate"]["lng"]
+      )
+    else
+      nil
+    end
   end
 
 end
