@@ -5,18 +5,23 @@ require "pp"
 require "./location"
 
 class FBApi
+  class Friend
+    def initialize(api_result)
+      location = api_result["current_location"]
+      @location_name = location && location["name"].split[0]
+    end
+
+    attr_reader :location_name
+  end
+
   def get_friend_locations
     friend_locations = []
 
     begin
-      friends = get_friends
+      locatable_friends = get_friends.select(&:location_name)
 
-      friends.each do |friend|
-        fb_location = friend["current_location"]
-        next unless fb_location
-
-        location_name = fb_location["name"].split[0]
-        location = find_coordinate(location_name)
+      locatable_friends.each do |friend|
+        location = find_coordinate(friend.location_name)
 
         next unless location
 
@@ -40,11 +45,12 @@ class FBApi
   end
 
   def get_friends
-    facebook_api.fql_query(<<-EOS)
+    friends = facebook_api.fql_query(<<-EOS)
         SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
         OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
         OR uid IN (select current_location from user where uid = me())
     EOS
+    friends.map{|friend| Friend.new(friend) }
   end
 
   def facebook_api
