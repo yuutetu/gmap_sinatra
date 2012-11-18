@@ -1,11 +1,9 @@
 #encoding:utf-8
 require "rubygems"
-require "koala"
 require "open-uri"
-require "active_support/core_ext"
-require "pp"
+require "koala"
 require "./location"
-require "tap"
+require "active_support/core_ext"
 
 
 class FBApi
@@ -19,47 +17,51 @@ class FBApi
 			SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
 			OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
 			AND current_location <> ''
-			LIMIT 1,10
+			LIMIT 1,5
 		EOS
 
-		puts token
-		puts fql
-		fql.tap{}
+	
 		friendsLocation=Array.new
 
 		begin
 			json = @rest.fql_query(fql).tap{}
-			pp json
 			json.each do |r|
 				location = r["current_location"]
+
 				unless location.nil?
 					address = location["name"].split[0]
-					uri = "http://www.geocoding.jp/api/?v=1.1&q='#{address}'"
-					result = open(uri , "r:UTF-8")
-					json = Hash.from_xml(result).to_json
-					array = JSON.load(json)["result"]
+					latlng = getLatlng(address)
 
-					pp array
-					unless array.nil? || array["error"].nil? || array["coordinate"].nil?
+					puts latlng
+					
+					unless latlng.nil? || latlng["error"].nil? || latlng["coordinate"].nil?
 						latlng = Location.new(
 							address,
-							array["coordinate"]["lat"] , 
-							array["coordinate"]["lng"]
+							latlng["coordinate"]["lat"] , 
+							latlng["coordinate"]["lng"]
 						)
 
 						friendsLocation << latlng
 					end
 
-					sleep 1
+					sleep 5
 				end
 			end
 		rescue => err
 			puts err
 			puts "rescue"
+			friendsLocation.tap{}
 		end
 
 
-		return friendsLocation
+		return friendsLocation.tap{}
+	end
+
+	def getLatlng(place)
+		uri = "http://www.geocoding.jp/api/?v=1.1&q='#{place}'"
+		puts uri
+		xml = open(uri , "r:UTF-8")
+		return JSON.load(Hash.from_xml(xml).to_json)["result"]
 	end
 
 end
