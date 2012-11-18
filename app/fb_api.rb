@@ -2,7 +2,6 @@
 require "active_support/core_ext"
 require "open-uri"
 require "pp"
-require "./location"
 
 class FBApi
   class Friend

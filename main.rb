@@ -2,13 +2,8 @@
 require "bundler"
 Bundler.require
 
-require "./location"
-require "./fbapi"
-
-class FBApi
-  def getLocation
-  end
-end
+require 'active_support/dependencies'
+ActiveSupport::Dependencies.autoload_paths += %w[app]
 
 get "/" do
   fbapi = FBApi.new
