@@ -9,29 +9,29 @@
       $(document).ready(function () {
           map = new GMaps({
               div:'#map',
-              lat:<%= @mylocation.getlat %>,
-              lng:<%= @mylocation.getlng %>,
+              lat:<%= @mylocation.latitude %>,
+              lng:<%= @mylocation.longitude %>,
               zoom:8
           });
 
           map.addMarker({
-              title:" + <%= @mylocation.getname %> +",
-              lat:<%= @mylocation.getlat %>,
-              lng:<%= @mylocation.getlng %>,
+              title:" + <%= @mylocation.name %> +",
+              lat:<%= @mylocation.latitude %>,
+              lng:<%= @mylocation.longitude %>,
               //color:"blue",
               infoWindow:{
-                  content:'<p><%= @mylocation.getname %></p>'
+                  content:'<p><%= @mylocation.name %></p>'
               },
               animation:google.maps.Animation.DROP
           });
 
           <% @locations.each do |loc| %>
           map.addMarker({
-              title:" + <%= loc.getname %> + ",
-              lat:<%= loc.getlat %>,
-              lng:<%= loc.getlng %>,
+              title:" + <%= loc.name %> + ",
+              lat:<%= loc.latitude %>,
+              lng:<%= loc.longitude %>,
               infoWindow:{
-                  content:'<p><%= loc.getname%></p>'
+                  content:'<p><%= loc.name %></p>'
               },
               animation:google.maps.Animation.DROP
           });

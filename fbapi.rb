@@ -5,23 +5,12 @@ require "pp"
 require "./location"
 
 class FBApi
-
   def get_friend_locations
-
-    token = ENV["FACEBOOK_TOKEN"] || raise("specify $FACEBOOK_TOKEN")
-    @rest = Koala::Facebook::API.new(token)
-
-    fql = <<-EOS
-      SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
-      OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
-      OR uid IN (select current_location from user where uid = me())
-    EOS
-
-
     friend_locations = []
 
     begin
-      friends = @rest.fql_query(fql)
+      friends = get_friends
+
       friends.each do |friend|
         fb_location = friend["current_location"]
         next unless fb_location
@@ -32,8 +21,8 @@ class FBApi
         next unless location
 
         friend_locations << location
-        #puts location.getname
-        #puts location.getlat
+        #puts location.name
+        #puts location.latitude
 
         sleep 1
       end
@@ -48,6 +37,19 @@ class FBApi
     end
 
     friend_locations
+  end
+
+  def get_friends
+    facebook_api.fql_query(<<-EOS)
+        SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
+        OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
+        OR uid IN (select current_location from user where uid = me())
+    EOS
+  end
+
+  def facebook_api
+    token = ENV["FACEBOOK_TOKEN"] || raise("specify $FACEBOOK_TOKEN")
+    Koala::Facebook::API.new(token)
   end
 
   def find_coordinate(location_name)
