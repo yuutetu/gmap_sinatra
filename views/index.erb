@@ -9,23 +9,23 @@
       $(document).ready(function () {
           map = new GMaps({
               div:'#map',
-              lat:<%= @mylocation.latitude %>,
-              lng:<%= @mylocation.longitude %>,
+              lat:<%= @my_location.latitude %>,
+              lng:<%= @my_location.longitude %>,
               zoom:8
           });
 
           map.addMarker({
-              title:" + <%= @mylocation.name %> +",
-              lat:<%= @mylocation.latitude %>,
-              lng:<%= @mylocation.longitude %>,
+              title:" + <%= @my_location.name %> +",
+              lat:<%= @my_location.latitude %>,
+              lng:<%= @my_location.longitude %>,
               //color:"blue",
               infoWindow:{
-                  content:'<p><%= @mylocation.name %></p>'
+                  content:'<p><%= @my_location.name %></p>'
               },
               animation:google.maps.Animation.DROP
           });
 
-          <% @locations.each do |loc| %>
+          <% @friend_locations.each do |loc| %>
           map.addMarker({
               title:" + <%= loc.name %> + ",
               lat:<%= loc.latitude %>,
