@@ -12,7 +12,7 @@ end
 
 get "/" do
   fbapi = FBApi.new
-  @locations = fbapi.getFriendLocation
+  @locations = fbapi.get_friend_locations
   @mylocation = Location.new("hamamatsu", 34.710834, 137.726126)
   erb :index
 end

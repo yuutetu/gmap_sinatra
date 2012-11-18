@@ -6,7 +6,7 @@ require "./location"
 
 class FBApi
 
-  def getFriendLocation
+  def get_friend_locations
 
     token = ENV["FACEBOOK_TOKEN"] || raise("specify $FACEBOOK_TOKEN")
     @rest = Koala::Facebook::API.new(token)
@@ -18,30 +18,30 @@ class FBApi
     EOS
 
 
-    friendsLocation = Array.new
+    friend_locations = []
 
     begin
-      json = @rest.fql_query(fql)
-      json.each do |r|
-        location = r["current_location"]
-        next unless location
+      friends = @rest.fql_query(fql)
+      friends.each do |friend|
+        fb_location = friend["current_location"]
+        next unless fb_location
 
-        address = location["name"].split[0]
-        uri = "http://www.geocoding.jp/api/?v=1.1&q='#{address}'"
+        location_name = fb_location["name"].split[0]
+        uri = "http://www.geocoding.jp/api/?v=1.1&q='#{location_name}'"
         result = open(uri, "r:UTF-8")
-        json = Hash.from_xml(result).to_json
-        array = JSON.load(json)["result"]
+        friends = Hash.from_xml(result).to_json
+        array = JSON.load(friends)["result"]
 
         pp array
         next unless array && array["error"].nil? && array["coordinate"]
 
         latlng = Location.new(
-            address,
+            location_name,
             array["coordinate"]["lat"],
             array["coordinate"]["lng"]
         )
 
-        friendsLocation << latlng
+        friend_locations << latlng
         #puts latlng.getname
         #puts latlng.getlat
 
@@ -49,16 +49,15 @@ class FBApi
       end
     rescue => err
       puts "rescue"
-      pp friendsLocation
+      pp friend_locations
       #pp err
-      return friendsLocation
+      return friend_locations
       #ensure
       #	puts "ensure"
-      #	return friendsLocation
+      #	return friend_locations
     end
 
-
-    return friendsLocation
+    friend_locations
   end
 
 end
