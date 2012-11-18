@@ -57,6 +57,8 @@ class FBApi
     Koala::Facebook::API.new(token)
   end
 
+  # TODO Facebookの機能じゃないので別ファイルにするか、モジュール名のほうを変えるかしたい
+  # TODO エラー処理。ここでrescueすればget_friend_locationsの方は要らない？
   def find_coordinate(location_name)
     uri = "http://www.geocoding.jp/api/?v=1.1&q='#{location_name}'"
     result_xml = open(uri, "r:UTF-8")
