@@ -17,14 +17,14 @@ class FBApi
 			SELECT uid, name, pic_square , current_location FROM user WHERE uid = me()
 			OR uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
 			AND current_location <> ''
-			LIMIT 1,5
+			LIMIT 1,20
 		EOS
 
 	
 		friendsLocation=Array.new
 
 		begin
-			json = @rest.fql_query(fql).tap{}
+			json = @rest.fql_query(fql)
 			json.each do |r|
 				location = r["current_location"]
 
@@ -34,13 +34,12 @@ class FBApi
 
 					puts latlng
 					
-					unless latlng.nil? || latlng["error"].nil? || latlng["coordinate"].nil?
+					unless latlng.nil? && latlng["error"].nil?
 						latlng = Location.new(
 							address,
 							latlng["coordinate"]["lat"] , 
 							latlng["coordinate"]["lng"]
 						)
-
 						friendsLocation << latlng
 					end
 
@@ -50,9 +49,7 @@ class FBApi
 		rescue => err
 			puts err
 			puts "rescue"
-			friendsLocation.tap{}
 		end
-
 
 		return friendsLocation.tap{}
 	end
